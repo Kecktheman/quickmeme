@@ -1,0 +1,61 @@
+#meme-container .meme {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin: 0 0 1rem;
+
+	animation: drop-in 0.4s;
+}
+#meme-container .meme h3 {
+	color: #fff;
+	margin: 0 0 1rem;
+}
+#meme-container .meme a {
+	max-width: 100%;
+	left: 0;
+	margin: 0;
+
+	transition: all 0.3s ease-in-out;
+	animation: fadein 0.3s;
+}
+#meme-container .meme video {
+	width: 100%;
+}
+
+#meme-container .meme a:hover {
+	z-index: 2;
+	transform: scale(1.01);
+}
+
+#meme-container .meme a img {
+	width: 100%;
+}
+
+#meme-container .memeBar {
+	position: absolute;
+	bottom: 0;
+	left: -1rem;
+	right: -1rem;
+
+	color: #fff;
+}
+#meme-container .memeBar .tags {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 0.5rem;
+	padding: 0 2rem;
+}
+#meme-container .memeBar .tag {
+	padding: 4px 10px;
+	margin: 0 4px 4px 0;
+	border-radius: 10px;
+	box-shadow: 0 0 20px 6px rgba(20, 20, 20, 0.2);
+	font-weight: bold;
+	cursor: pointer;
+}
+#meme-container .memeBar div {
+	padding: 1rem 2rem;
+}
+#meme-container .memeBar div:last-of-type {
+	background: #0a0a0a80;
+}

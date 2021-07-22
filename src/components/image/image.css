@@ -1,0 +1,68 @@
+h3 {
+	color: red;
+}
+
+/* Image loader */
+.image-container {
+	position: relative;
+}
+.image-container .loader {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+.image-container .loader.hidden {
+	display: none;
+}
+.lds-ripple {
+	display: inline-block;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 80px;
+	height: 80px;
+	transform: translate(-50%, -50%) scale(0.75);
+}
+.lds-ripple div {
+	position: absolute;
+	border: 4px solid #fff;
+	opacity: 1;
+	border-radius: 50%;
+	animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+	animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+	0% {
+		top: 36px;
+		left: 36px;
+		width: 0;
+		height: 0;
+		opacity: 1;
+	}
+	100% {
+		top: 0px;
+		left: 0px;
+		width: 72px;
+		height: 72px;
+		opacity: 0;
+	}
+}
+@keyframes dropin {
+	0% {
+		top: 36px;
+		left: 36px;
+		width: 0;
+		height: 0;
+		opacity: 1;
+	}
+	100% {
+		top: 0px;
+		left: 0px;
+		width: 72px;
+		height: 72px;
+		opacity: 0;
+	}
+}

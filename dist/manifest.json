@@ -1,0 +1,22 @@
+{
+	"name": "Quickmeme",
+	"version": "1.2",
+	"description": "A quick way to settle your meme§ addiction!",
+	"permissions": ["activeTab", "declarativeContent", "storage"],
+	"browser_action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "src/images/quickmeme_16.png",
+			"32": "src/images/quickmeme_32.png",
+			"48": "src/images/quickmeme_48.png",
+			"128": "src/images/quickmeme_128.png"
+		}
+	},
+	"icons": {
+		"16": "src/images/quickmeme_16.png",
+		"32": "src/images/quickmeme_32.png",
+		"48": "src/images/quickmeme_48.png",
+		"128": "src/images/quickmeme_128.png"
+	},
+	"manifest_version": 2
+}
