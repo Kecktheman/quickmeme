@@ -2,6 +2,16 @@
 
 A Google-Chrome extention and may be supportet in other browsers. To use, please enable extention-development mode inside Chrome, and then load the 'dist'-folder as a exention. This will allow the project to be loaded in the browser!
 
+Build with Preact (smaller react-library to minimize size because of its usage.)
+
+Startpage
+![Example image 1](example-images/example1.PNG?raw=true "Example image 1")
+
+Search-query
+![Example image 2](example-images/example2.PNG?raw=true "Example image 2")
+
+Posts are also displayed with relevant tags, points, views.
+
 ## CLI Commands
 
 ``` bash
