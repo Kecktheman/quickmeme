@@ -1,0 +1,86 @@
+:root {
+    --bg: linear-gradient(125deg, rgba(163, 255, 174, 1) 0%, rgba(198, 241, 151, 1) 33%, rgba(183, 255, 253, 1) 68%, rgba(110, 255, 127, 1) 100%);
+    --bg-backup: rgb(163, 255, 174);
+
+    --text-clr: #222;
+
+    --bg-scroll-track: linear-gradient(180deg, #4c5058 0%, #3a3e46 35%, #131721 100%);
+    --bg-scroll-track-backup: #4c5058;
+
+}
+
+#meme-container .meme {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 1rem;
+
+    animation: drop-in 0.4s;
+}
+
+#meme-container .meme h3 {
+    color: var(--text-clr);
+    margin: 0 0 1rem;
+}
+
+#meme-container .meme a {
+    max-width: 100%;
+    left: 0;
+    margin: 0;
+
+    transition: all 0.3s ease-in-out;
+    animation: fadein 0.3s;
+}
+
+#meme-container .meme video {
+    width: 100%;
+}
+
+#meme-container .meme a:hover {
+    z-index: 2;
+    transform: scale(1.01);
+}
+
+#meme-container .meme a img {
+    width: 100%;
+}
+
+#meme-container .memeBar {
+    position: absolute;
+    bottom: 0;
+    left: -1rem;
+    right: -1rem;
+
+    color: #fff;
+}
+
+#meme-container .memeBar .tags {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem 2rem;
+}
+
+#meme-container .memeBar .tag {
+    position: relative;
+    padding: 4px 10px;
+    margin: 0 6px 6px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 6px rgba(20, 20, 20, 0.2);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+#meme-container .memeBar .tag:hover,
+#meme-container .memeBar .tag:focus {
+    transform: scale(1.1);
+    z-index: 2;
+}
+
+#meme-container .memeBar div {
+    padding: 1rem 2rem;
+}
+
+#meme-container .memeBar div:last-of-type {
+    /* background: #0a0a0a80; */
+}
