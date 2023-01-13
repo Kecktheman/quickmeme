@@ -1,17 +1,24 @@
-import { useState, useEffect, useRef } from 'preact/hooks';
+import { useState, useEffect, useRef } from 'preact/hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFire, faFireAlt, faPlus, faTrophy, faBolt, faSort } from '@fortawesome/free-solid-svg-icons'
 
-import Meme from './components/meme/meme';
+import Meme from './components/meme'
+import Toast from './components/toast'
+import Select from './components/select'
+import NavButton from './components/navButton'
 import useDebounce from "./helpers/useDebounce"
-import './app.scss';
+import './app.scss'
+import './components/toast/toast.scss'
 const apiBaseUri = 'https://api.imgur.com/3/gallery'
 const apiKey = 'f415da48218c88a'
 
 export default function App() {
 	const [memes, setMemes] = useState(new Array)
+
 	const [message, setMessage] = useState(null)
 	const [errorMessage, setErrorMessage] = useState(null)
+	const [latestToast, setLatestToast] = useState(null)
+
 	const [showSearch, setShowSearch] = useState(false)
 	const searchInputRef = useRef(null)
 	const appRootRef = useRef(null)
@@ -32,6 +39,13 @@ export default function App() {
 	})
 	const [urlString, setUrlString] = useState(null)
 
+	// Debounce search toast as we debounce loadContent
+	useDebounce(() => Toast(latestToast), 500, [latestToast])
+
+	// Run loadContent after debounce on urlParams build to string
+	useDebounce(() => loadContent(urlString), 500, [urlString])
+
+	// Init useEffect
 	useEffect(() => {
 		setUrlParams({
 			...urlParams,
@@ -60,26 +74,23 @@ export default function App() {
 		let url = null
 		let computedQuery = query
 
-		console.log("computedQuery", computedQuery)
-
 		if (computedQuery) {
 			// Modify query if string contains unaccepted characters (not valid in Imgur API)
 			computedQuery = computedQuery.replace('å', 'a').replace('Å', 'A')
 			computedQuery = computedQuery.replace('ä', 'a').replace('Ä', 'A')
 			computedQuery = computedQuery.replace('ö', 'o').replace('Ö', 'O')
-
+			
+			setLatestToast(`Searching for "${computedQuery}"`)
 			url = `${apiBaseUri}/search/${sort.value}/${window}/${page}?q=${computedQuery}`
 		}
-		else
+		else {
+			setLatestToast(`Searching for ${section}, sorted by ${sort.label?.toLowerCase()}`)
 			url = `${apiBaseUri}/${section}/${sort.value}/${window}/${page}?showViral=${showViral}&mature=${showMature}&album_previews=${albumPreviews}`
+		}
 
 		setLoading(true)
 		setUrlString(url)
 	}, [urlParams])
-
-	// Run loadContent after debounce on urlParams build to string
-	useDebounce(() => loadContent(urlString), 500, [urlString])
-
 
 	const loadContent = (url) => new Promise(resolve => {
 		setLoading(true)
@@ -113,6 +124,7 @@ export default function App() {
 
 		setLoading(false)
 		setMemes(value.data)
+		setLatestToast("Success - enjoy!")
 	})
 	.catch(err => {
 		setErrorMessage(err)
@@ -125,48 +137,6 @@ export default function App() {
 		});
 	}
 
-	const NavButton = ({ title, values, icon, className }) => {
-		return (
-			<button className={`action ${urlParams.section == values['section'] ? 'active' : ''} ${className}`} onClick={() =>
-				setUrlParams({
-					...urlParams,
-					section: values.section ? values['section'] : urlParams.section,
-					sort: values.sort ? values['sort'] : urlParams.sort,
-					page: 0,
-					query: null
-				})}>
-				{
-					icon && <FontAwesomeIcon icon={icon} />
-				}
-				{title}
-			</button>
-		)
-	}
-
-	const Select = ({ value, id, label, options }) => {
-		const [hide, setHide] = useState(true)
-
-		return (
-			<span className="select">		
-				<label for={id} className="select__label" onClick={() => setHide(!hide)}>{ label }</label>
-				<button for={id} className={`action select__present ${hide ? '' : 'active'}`} onClick={() => setHide(!hide)}>
-					{ urlParams.sort.label } 
-					<FontAwesomeIcon icon={faSort} />
-				</button>
-				<div id={id} className={`select__dropdown ${ hide ? 'select__dropdown--hide' : ''}`}>
-					{
-						options.map(item => {
-							return <button className="action select__button" onClick={() => {
-								setUrlParams({ ...urlParams, sort: item });
-								setHide(false)
-							}}>{ item.label }</button>	
-						})
-					}
-				</div>	
-			</span>
-		)
-	}
-
 	return (
 		<div id="app-root" ref={appRootRef}>
 			<div id="anchor"></div>
@@ -174,10 +144,27 @@ export default function App() {
 				<h2>Quickmeme</h2>
 				<div className="primary nav">
 
-					<Select value={urlParams.sort} id={"sortby"} label={"Sort by"} options={sortByOptions}></Select>
+					<Select value={urlParams.sort} id={"sortby"} label={"Sort by"} options={sortByOptions} urlParams={urlParams} setUrlParams={(_urlParams) => setUrlParams({ ...urlParams, ..._urlParams})}></Select>
 
-					<NavButton title={'Hot'} values={{ section: 'hot', sort: sortByOptions.find(x => x.value == 'viral') }} icon={faFireAlt} className={'button--hot'} />
-					<NavButton title={'Top'} values={{ section: 'top', sort: sortByOptions.find(x => x.value == 'viral') }} icon={faTrophy} className={'button--top'} />
+					<NavButton options={{
+							title: 'Hot',
+							values: { section: 'hot', sort: sortByOptions.find(x => x.value == 'viral') },
+							icon: faFireAlt,
+							className: 'button--hot',
+							urlParams: urlParams,
+							setUrlParams: (_urlParams) => setUrlParams({ ...urlParams, ..._urlParams })
+						}} />
+
+					<NavButton options={{
+							title: 'Top',
+							values: { section: 'top', sort: sortByOptions.find(x => x.value == 'viral') },
+							icon: faTrophy,
+							className: 'button--top',
+							urlParams: urlParams,
+							setUrlParams: (_urlParams) => setUrlParams({ ...urlParams, ..._urlParams })
+						}} />
+
+					{/* <NavButton title={'Top'} values={{ section: 'top', sort: sortByOptions.find(x => x.value == 'viral') }} icon={faTrophy} className={'button--top'} /> */}
 					{/* <NavButton title={'New'} values={{ section: 'user', sort: 'time' }} icon={faPlus} className={'button-new'} /> */}
 
 					<button onClick={() => {

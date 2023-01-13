@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "preact/hooks"
 
 export default function useTimeout(callback, delay) {
   const callbackRef = useRef(callback)

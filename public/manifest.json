@@ -1,6 +1,6 @@
 {
 	"name": "Quickmeme",
-	"version": "2",
+	"version": "3.0",
 	"description": "A quick and subtle way to look at memes!",
 	"permissions": [
 		"activeTab",

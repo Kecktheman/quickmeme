@@ -1,9 +1,11 @@
-import {h, Component} from 'preact';
 import {useState} from 'preact/hooks';
-import Image from '../image/image';
+import Image from '../image';
 import './meme.css';
+import Toast from '../toast';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faShare} from '@fortawesome/free-solid-svg-icons';
 
-export default function meme({item, tagClick}) {
+export default function Meme({item, tagClick}) {
   const [state, setState] = useState ({
     title: item.title,
     link: item.link,
@@ -13,9 +15,22 @@ export default function meme({item, tagClick}) {
     tags: item.tags,
   });
 
+  const createShareLink = () => {
+    if (!'clipboard' in navigator) return;
+
+    const linkToShare = state.link;
+
+    navigator.clipboard.writeText (linkToShare);
+
+    Toast ('Link copied to clipboard!');
+  };
+
   return (
     <div class="meme">
-      <h3>{state.title}</h3>
+      <h3>
+        {state.title}
+        <button title="Share link" className='share' onClick={() => createShareLink ()}> <FontAwesomeIcon icon={faShare} /></button>
+      </h3>
 
       {state.description ? <h4>{state.description}</h4> : null}
 

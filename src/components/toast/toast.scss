@@ -1,0 +1,70 @@
+.gui-toast-group {
+    position: fixed;
+    z-index: 1;
+    inset-block-end: 0;
+    inset-inline: 0;
+    padding-block-end: .5rem;
+
+    display: grid;
+    justify-items: start;
+    justify-content: start;
+    gap: 1vh;
+    z-index: 900;
+
+    /* optimizations */
+    pointer-events: none;
+}
+
+.gui-toast {
+    --_duration: 3s;
+    --_bg-lightness: 41%;
+    --_travel-distance: 0;
+
+    margin: 0 .5rem;
+
+    font-family: system-ui, sans-serif;
+    color: #fff;
+    background: hsl(152 74% var(--_bg-lightness));
+
+    max-inline-size: calc(100vw - 4.5rem);
+    padding-block: .5ch;
+    padding-inline: 1ch;
+    border-radius: 3px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    z-index: 900;
+
+    will-change: transform;
+    animation:
+        fade-in .3s ease,
+        slide-in .3s ease,
+        fade-out .3s ease var(--_duration);
+
+    @media (--dark) {
+        color: white;
+        --_bg-lightness: 20%;
+    }
+
+    @media (--motionOK) {
+        --_travel-distance: 5vh;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0
+    }
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0
+    }
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateY(var(--_travel-distance, 10px))
+    }
+}
